@@ -1,2 +1,17 @@
 
-sudo java -jar build/libs/logtrawler-0.5.jar -f /var/log -h $(hostname -f) -o stdout -e '0.0.0.0:20147' -a '0.0.0.0/0' -m text/plain -m text/x-log -m -application/octet-stream
+sudo java -jar build/libs/logtrawler-0.5.0.jar -f /var/log -h $(hostname -f) -o stdout -e '0.0.0.0:20147' -a '0.0.0.0/0'
+
+RPM:
+====
+rpm2cpio build/distributions/logtrawler-0.5.0-1.noarch.rpm | cpio -itv
+
+java -cp $HOME/Downloads/redline-1.2.2-jar-with-dependencies.jar org.redline_rpm.Scanner build/distributions/logtrawler-0.5.0-1.noarch.rpm
+
+Or:
+yum install mc
+mc
+
+Or:
+yum install rpmrebuild
+
+rpmrebuild -e -p build/distributions/logtrawler-0.5.0-1.noarch.rpm

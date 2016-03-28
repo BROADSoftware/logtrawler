@@ -3,6 +3,10 @@ Suggestion of Improvement:
 
 - regex for allowed mimetype
 
+- Complete documentation
+
+- Integrate systemd natively
+
 - Proguard to minimize jar size 
 
 - Add a 'nice' stuff

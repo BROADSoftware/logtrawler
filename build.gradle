@@ -1,16 +1,19 @@
 
 
 
+plugins {
+  id 'nebula.ospackage' version '3.4.0'
+}
+
 apply plugin: 'java'
 
 repositories {
     jcenter()
 }
 
-version = '0.5'
+version = '0.5.0'
 
 apply plugin: 'eclipse'
-
 	
 // Refer to https://issues.gradle.org/browse/GRADLE-1010
 eclipseJdt << {
@@ -48,7 +51,6 @@ task fatJar(type: Jar) {
 
 
 // To launch as: ./run.sh main arg1 arg2 ..
-
 task run_main(type: JavaExec) {
 	dependsOn classes
 	description = "Main Command launcher"
@@ -58,4 +60,44 @@ task run_main(type: JavaExec) {
 		args Eval.me(runArgs)	
 	}
 }
+
+task rpm(type: Rpm) {
+	summary 'Log collector'
+	packageName 'logtrawler'
+	version version
+	arch NOARCH
+	vendor 'BROADSoftware'
+	license 'Apache 2.0'
+	os LINUX
+	release '1'
+	packageDescription 'logtrawler is an agent aimed to monitor one or several folder containing log files. Every collected log line is pushed to a server as a JSON message.'
+    
+   	from(fatJar.outputs.files) {
+	    into '/opt/logtrawler'
+	    user 'root'
+		group 'root'
+		rename 'logtrawler(.+).jar', 'logtrawler.jar'
+	    fileMode 0644
+    }
+    
+   	from('scripts/packages/setenv.sh') {
+	    into '/etc/logtrawler'
+	    user 'root'
+		group 'root'
+	    fileMode 0644
+    }
+
+   	from('scripts/packages/init.sh') {
+	    into '/opt/logtrawler'
+	    user 'root'
+		group 'root'
+	    fileMode 0755
+    }
+    
+    preInstall file('scripts/rpm/preInstall.sh')
+    postInstall file('scripts/rpm/postInstall.sh')
+    preUninstall file('scripts/rpm/preUninstall.sh')
+    postUninstall file('scripts/rpm/postUninstall.sh')
+}
+
 
