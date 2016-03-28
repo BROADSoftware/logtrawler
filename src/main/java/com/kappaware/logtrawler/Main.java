@@ -165,7 +165,7 @@ public class Main {
 		try {
 			// Check config
 			if (config.getAgents() == null || config.getAgents().size() < 1) {
-				throw new ConfigurationException("At least one agent must be configured in config file, or a folder to monitor must be provided on command line!");
+				throw new ConfigurationException("At least one folder to monitor must be provided!");
 			}
 			Map<String, AgentHandler> agentHandlerByName = new HashMap<String, AgentHandler>();
 			for (Config.Agent agent : config.getAgents()) {
@@ -199,9 +199,8 @@ public class Main {
 			System.out.print(String.format("\nERROR: %s\n\n", err));
 		}
 		HelpFormatter f = new HelpFormatter();
-		f.printHelp("jaleven cmd [options]\nWhere cmd is one of config-file\n\n\n", options);
+		f.printHelp("logtrawler options...\n\nOptions:\n\n", options);
 		System.exit(1);
-
 	}
 
 }

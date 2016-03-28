@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+  <appender name="tcp" class="org.apache.log4j.net.SocketAppender"> 
+    <param name="RemoteHost" value="localhost"/> 
+    <param name="Port" value="6000"/> 
+    <param name="LocationInfo" value="true"/> 
+    <param name="ReconnectionDelay" value="5000"/> 
+    <layout class="org.apache.log4j.PatternLayout"> 
+      <param name="ConversionPattern" value="%d %5p %c - %m%n"/> 
+    </layout> 
+  </appender> 
+
+
+ <logger name="com.kappaware"><level value="debug"/></logger>
+
+  <root> 
+    <level value="info" /> 
+    <appender-ref ref="tcp" /> 
+  </root>
+</log4j:configuration>
+
+ 

@@ -1,0 +1,124 @@
+
+# Create index
+
+curl -XPOST en1.dzr316.dza.datazoomr.com:9200/log5 -d '{
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "logs" : {
+            "_source" : { "enabled" : false },
+            "properties" : {
+                "hostname" : { "type" : "string", "index" : "not_analyzed", "store" : true },
+                "agent" : { "type" : "string", "index" : "not_analyzed", "store" : true },
+                "type" : { "type" : "string", "index" : "not_analyzed", "store" : true },
+                "file" : { "type" : "string", "index" : "not_analyzed", "store" : true },
+                "fileKey" : { "type" : "string", "index" : "not_analyzed", "store" : true },
+                "position" : { "type" : "long", "index" : "analyzed", "store" : true },
+                "timestamp" : { "type" : "date", "index" : "analyzed", "store" : true },
+                "data" : { "type" : "string", "index" : "analyzed", "store" : true } ,
+                "mimeType" : { "type" : "string", "index" : "not_analyzed", "store" : true },
+                "isLog" : { "type" : "boolean", "index" : "not_analyzed", "store" : true }
+            }
+        }
+    }
+}'
+
+
+# Get mapping
+curl -XGET en1.dzr316.dza.datazoomr.com:9200/log5/_mapping/logs?pretty=true
+
+# Delete index
+curl -XDELETE en1.dzr316.dza.datazoomr.com:9200/log4
+
+
+Marvell
+http://en1.dzr316.dza.datazoomr.com:9200/_plugin/marvel
+
+# request1
+
+GET /log4/logs/_search
+{
+  "fields": [
+    "*"
+  ],
+  "query": {
+    "filtered": {
+      "query": {
+        "match_all": {}
+      },
+      "filter": {
+        "term": {
+          "type": "DATA_LINE"
+        }
+      }
+    }
+  }
+}
+
+
+
+# And filter
+
+GET /log4/logs/_search
+{
+  "fields": [
+    "*"
+  ],
+  "query": {
+    "filtered": {
+      "query": {
+        "match_all": {}
+      },
+      "filter": {
+        "and": [
+          {
+            "term": {
+              "hostname": "sr1.dzr318.dza.datazoomr.com"
+            }
+          },
+          {
+            "term": {
+              "type": "DATA_LINE"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+
+# Aggregation
+
+GET /log4/logs/_search
+{
+  "aggs": {
+    "filecount": {
+      "terms": {
+        "field": "file",
+        "size": 10000
+      }
+    }
+  }
+}
+
+# setenv.sh of dzr318:
+
+OPTS="$OPTS -f /var/log"
+OPTS="$OPTS -e 0.0.0.0:20147"
+OPTS="$OPTS -a 192.168.0.0/16"
+OPTS="$OPTS -a 10.0.0.0/8"
+# OPTS="$OPTS -o file:///tmp/collector.out"
+OPTS="$OPTS -o http://dzr316.hadoop.datazoomr.com:9200/log5/logs"
+OPTS="$OPTS -x \"/var/log/nagios/spool/.*\""
+
+
+# setenv.sh of dzr316:
+
+OPTS="$OPTS -f /var/log"
+OPTS="$OPTS -e 0.0.0.0:20147"
+OPTS="$OPTS -a 192.168.0.0/16"
+OPTS="$OPTS -a 10.0.0.0/8"
+# OPTS="$OPTS -o file:///tmp/collector.out"
+OPTS="$OPTS -o http://en1:9200/log5/logs"

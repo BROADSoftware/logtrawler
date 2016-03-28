@@ -44,6 +44,9 @@ public class Config {
 		if(this.displayDot == null) {
 			this.displayDot = false;
 		}
+		if(this.adminAllowedNetwork == null) {
+			this.addAdminAllowedNetwork("127.0.0.1/32");
+		}
 	}
 
 	public void addAgent(Agent agent) throws ConfigurationException {
@@ -164,6 +167,7 @@ public class Config {
 			if (this.logMimeTypes == null) {
 				this.addLogMimeType("text/plain");
 				this.addLogMimeType("text/x-log");
+				this.addLogMimeType("application/octet-stream");
 			}
 			if (this.folders == null) {
 				this.folders = new LinkedHashSet<Folder>();

@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * add() is only effective if an equal object does not allready exists in the queue.
+ * add() is only effective if an equal object does not already exists in the queue.
  * 
  * Note this could be implemented using the contains() of the Queue, but I think using a HashSet is more time effective.
  * 

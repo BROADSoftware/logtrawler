@@ -1,0 +1,2 @@
+
+sudo java -jar build/libs/logtrawler-0.5.jar -f /var/log -h $(hostname -f) -o stdout -e '0.0.0.0:20147' -a '0.0.0.0/0' -m text/plain -m text/x-log -m -application/octet-stream

@@ -1,0 +1,23 @@
+
+Suggestion of Improvement:
+
+- regex for allowed mimetype
+
+- Proguard to minimize jar size 
+
+- Add a 'nice' stuff
+
+- Ubuntu packaging 
+
+- In agent/all, display also config at root level
+
+- Add a centralized configuration system.
+
+- Stats count of outgoing message per outputFlow. Store last messages + response
+
+- An option to have some debug about server feedback (Or ablility to specify a log4j.xml: PropertyConfigurator)
+
+DONE:
+- Test on OpenJDK: OK. 
+
+
